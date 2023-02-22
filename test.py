@@ -24,6 +24,6 @@ with header:
 
 with script_testing:
   st.header('Here I will test scripts')
-  number = test_script.add(10,20)
+  number = others.other([10,270])
   st.text(f'Insert description here {number}')
 
