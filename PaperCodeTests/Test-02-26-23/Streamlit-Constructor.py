@@ -1,4 +1,6 @@
 import streamlit as st
+from python_scripts import test_script
+from python_scripts import others
 
 
 header = st.container()
@@ -12,6 +14,11 @@ with header:
 
 with function:
     st.header("This is where we will test the function.")
+    #input = st.text_input("Do you want the quantitative information corresponding to a paper?")
+    st.write(test_script.interact_manual(test_script.extract_quantitative_data_paper  ,
+                                         work_id= test_script.widgets.Text(value='W00000000' , description="Enter a work id from OpenAlex" ,
+                                                                           style = {'description_width':'initial' }   ,
+                                                                           layout=test_script.Layout(width='500px'))))
 
 with widget:
-    st.header("This is where we will test teh widget.")
+    st.header("This is where we will test the widget.")
