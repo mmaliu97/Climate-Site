@@ -20,18 +20,18 @@ modelTraining = st.container()
 with header:
   st.title('Climate-Site-napse')
   st.text(others.add(10,22))
-  user_input = st.text_input("insert patent id")
+  user_input = st.text_input("insert paper id")
 
-  # test with 10167450 
-  patent_info, patent_url, patent_assignees, patent_inventors = functions.extract_quantitative_data_patent(user_input)
-  title = patent_info["patent_title"]
-  abstract = patent_info["patent_abstract"]
-  st.write(f'URL is {patent_url}')
-  st.write(f'The title of the patent is {title}')
-  st.write(f'The abstract of the patent is {abstract}')
-
-  st.write(f'The patent assignees are {patent_assignees}')
-  st.write(f'The patent inventors are {patent_inventors}')
+  url, date, title, abstract, concepts, authors, institutions = functions.extract_quantitative_data_paper(user_input)
+  
+  st.write(f'Paper URL: {url}')
+  st.write(f'Paper date: {date}')
+  st.write(f'Paper title: {title}')
+  st.write(f'Paper abstract: {abstract}')
+  st.write(f'Paper concepts: {concepts}')
+  st.write(f'Paper authors: {authors}')
+  st.write(f'Paper institutions: {institutions}')
+  
 
 
 
