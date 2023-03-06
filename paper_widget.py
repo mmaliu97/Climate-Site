@@ -20,9 +20,9 @@ modelTraining = st.container()
 with header:
   st.title('Climate-Site-napse')
   st.text(others.add(10,22))
+  # test with W2169337437
   user_input = st.text_input("insert paper id")
 
-# test with W2169337437
   url, date, title, abstract, concepts, authors, institutions = functions.extract_quantitative_data_paper(user_input)
   
   st.write(f'Paper URL: {url}')
