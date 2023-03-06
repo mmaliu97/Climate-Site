@@ -59,6 +59,7 @@ distance routes.
 Explore demonstration projects related to this sector in the Clean
 Energy Demonstration Projects database
 <http://www.iea.org/data-and-statistics/data-tools/clean-energy-demonstration-projects-database?subsector=Shipping>.
+
 8-9 	Transport > Shipping 	Vehicle-aircraft-vessel and components >
 Methanol-fuelled engine 	End-use and operations 	Moderate 	Details
 
@@ -292,6 +293,7 @@ MCFC fuel cells are being developed and tested:
 
 Explore demonstration projects related to this sector in the Clean
 Energy Demonstration Projects database
+
 <http://www.iea.org/data-and-statistics/data-tools/clean-energy-demonstration-projects-database?subsector=Shipping>.
 7 	Transport > Shipping 	Vehicle-aircraft-vessel and components >
 Hydrogen fuel cell electric vehicle > Solid Oxide 	End-use and

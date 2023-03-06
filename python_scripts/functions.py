@@ -62,7 +62,36 @@ def cosine_similarity2(vec_a, vec_b):
 
 ################################### Extracted texts ###############################################################
 
+def extract_quantitative_data_paper( work_id):
+    
 
+    try:
+        url = "https://api.openalex.org/works/" + str(work_id)
+        data = get_data(url)
+        date = data["publication_date"]
+        title = data["title"]
+        abstract = reconstruction_abstract(data["abstract_inverted_index"])
+        concepts = ", ".join( [elem["display_name"] for elem in data["concepts"]] )
+        authors = ", ".join( [elem["author"]["display_name"] for elem in data["authorships"]] )
+        institutions = ", ".join( set([elem["institutions"][0]["display_name"] for elem in data["authorships"]]) )
+        print("\033[96mFROM OpenAlex: ")
+        print("\033[92mPaper link: "  + url)
+        print(" ")
+        print("\033[92mTitle: \x1b[0m"  + title)
+        print(" ")
+        print("\033[92mConcepts: \x1b[0m"  + concepts)
+        print(" ")
+        print("\033[92mDate: \x1b[0m"  + date)
+        print(" ")
+        print("\033[92mAuthors: \x1b[0m"  + authors)
+        print(" ")
+        print("\033[92mInstitutions: \x1b[0m"  + institutions)
+        print(" ")
+        # sentences = extract_sentences_with_numbers(abstract , "\033[92mAbstract\x1b[0m")
+        return [url, date, title, abstract, concepts, authors, institutions]
+    except:
+        print("Enter a valid work id from OpenAlex")
+        
    
 def extract_quantitative_data_patent( patent_id):
 
