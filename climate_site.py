@@ -6,31 +6,25 @@ Here's our first attempt at using data to create a table:
 import streamlit as st
 import pandas as pd
 from python_scripts import functions
-<<<<<<< HEAD
 from python_scripts import multi_input_functions
-=======
 from python_scripts import others
 
 
->>>>>>> 27bf66b26f7923b6e10ebca6d06b6657f87b8e44
-
 header = st.container()
-dataset = st.container()
-features = st.container()
+
 patent_finder = st.container()
 
-modelTraining = st.container()
 
 # with header:
 #   st.title('Climate-Site-napse')
 #   user_input = st.text_input("insert patent id")
 
-#   # test with 10167450 
-#   patent_info, patent_url, patent_assignees, patent_inventors = functions.extract_quantitative_data_patent(user_input)
-#   title = patent_info["patent_title"]
-#   abstract = patent_info["patent_abstract"]
-#   st.write(f'URL is {patent_url}')
-#   st.write(f'The title of the patent is {title}')
+  # test with 10167450 
+  # patent_info, patent_url, patent_assignees, patent_inventors = test_script.extract_quantitative_data_patent(user_input)
+  # title = patent_info["patent_title"]
+  # abstract = patent_info["patent_abstract"]
+  # st.write(f'URL is {patent_url}')
+  # st.write(f'The title of the patent is {title}')
   # st.write(f'The abstract of the patent is {abstract}')
 
   # st.write(f'The patent assignees are {patent_assignees}')
@@ -61,18 +55,6 @@ with patent_finder:
   patent_type = st.selectbox('Select a category',['Any related patents', 'Climate related patents'])
   st.write(f'You chose {patent_type}')
 
-<<<<<<< HEAD
-=======
-  # test with 10167450 
-  patent_info, patent_url, patent_assignees, patent_inventors = functions.extract_quantitative_data_patent(user_input)
-  title = patent_info["patent_title"]
-  abstract = patent_info["patent_abstract"]
-  st.write(f'URL is {patent_url}')
-  st.write(f'The title of the patent is {title}')
-  st.write(f'The abstract of the patent is {abstract}')
->>>>>>> 27bf66b26f7923b6e10ebca6d06b6657f87b8e44
-
-  
 
   if st.button('Get related patents'):
     patent_rank_df = multi_input_functions.get_ranking_patents(
@@ -84,15 +66,8 @@ with patent_finder:
   )
     st.dataframe(patent_rank_df)
 
-<<<<<<< HEAD
   # st.write(f'list_categories_tech is {list_categories_tech}')
   # st.write(f'list_technologies is {list_technologies}')
   # st.write(f'dic_categories is {dic_categories}')
-=======
 
-with script_testing:
-  st.header('Here I will test scripts')
-  number = others.other([10,270])
-  st.text(f'Insert description here {number}')
->>>>>>> 27bf66b26f7923b6e10ebca6d06b6657f87b8e44
 
