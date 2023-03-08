@@ -1,39 +1,17 @@
-"""
-# My first app
-Here's our first attempt at using data to create a table:
-"""
 
 import streamlit as st
 import pandas as pd
 from python_scripts import functions
-from python_scripts import multi_input_functions
+from python_scripts import patent_functions
 from python_scripts import others
 
 
 header = st.container()
-
 patent_finder = st.container()
-
-
-# with header:
-#   st.title('Climate-Site-napse')
-#   user_input = st.text_input("insert patent id")
-
-  # test with 10167450 
-  # patent_info, patent_url, patent_assignees, patent_inventors = test_script.extract_quantitative_data_patent(user_input)
-  # title = patent_info["patent_title"]
-  # abstract = patent_info["patent_abstract"]
-  # st.write(f'URL is {patent_url}')
-  # st.write(f'The title of the patent is {title}')
-  # st.write(f'The abstract of the patent is {abstract}')
-
-  # st.write(f'The patent assignees are {patent_assignees}')
-  # st.write(f'The patent inventors are {patent_inventors}')
-
 
 with patent_finder:
   st.header('Which patents are related to the technology?')
-  dic_technologies, dic_categories, list_categories_tech, list_technologies = multi_input_functions.finder()
+  dic_technologies, dic_categories, list_categories_tech, list_technologies = patent_functions.finder()
 
   # Choose the category
   tech_category = st.selectbox('Select a category',list_categories_tech)
@@ -48,6 +26,8 @@ with patent_finder:
   technology = st.selectbox('Select a category',technologies,format_func = key0)
   # st.write(f'You chose {technology[0]}')
   # st.write(f'You chose the tech number {technology[1]}')
+  st.write(f'You chose the tech number {dic_categories}')
+  st.write(f'You chose the tech number {dic_technologies}')
 
   # display the categories
   tech_categories = dic_categories[technology[1]]
@@ -77,5 +57,3 @@ with patent_finder:
   # st.write(f'list_categories_tech is {list_categories_tech}')
   # st.write(f'list_technologies is {list_technologies}')
   # st.write(f'dic_categories is {dic_categories}')
-
-
