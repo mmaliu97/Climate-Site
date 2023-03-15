@@ -82,7 +82,7 @@ def cosine_similarity2(vec_a, vec_b):
 
 def print_extracted_text(name_file):
 
-    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
     count = 0
     for index, line in enumerate(lines):
@@ -97,7 +97,7 @@ def print_extracted_text(name_file):
 
 def details(name_file , display):
     
-    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
 
     mark = 0 
@@ -137,7 +137,7 @@ def details(name_file , display):
 
 def key_initiatives(name_file , display ):
     
-    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
 
       
@@ -182,7 +182,7 @@ def key_initiatives(name_file , display ):
 
 def deployment_target(name_file , display):
     
-    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
 
 
@@ -226,7 +226,7 @@ def deployment_target(name_file , display):
     
 def cost_reduction_target(name_file , display):
     
-    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
     
     mark = 0 
@@ -271,7 +271,7 @@ def cost_reduction_target(name_file , display):
 
 def key_words(name_file, display ):
     
-    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     
     lines = file.readlines()
     
@@ -350,7 +350,7 @@ def key_words(name_file, display ):
 
 def technology(name_file, display ):
     # Filepath too specific, need to change to relative path
-    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
     
     list_categories = []
@@ -535,7 +535,7 @@ def ranking_patents(number_technology , research_words, carbon_related , display
     return dic_scores
 
 
-def get_ranking_patents(technologies, number_technology ,  carbon_related ,category, size):
+def get_ranking_patents(technologies, number_technology ,category ,  carbon_related , size):
     dic_patents = ranking_patents(number_technology , category, carbon_related , False)
     if dic_patents == {}:
         return "No patent found, select other key words"
@@ -545,6 +545,166 @@ def get_ranking_patents(technologies, number_technology ,  carbon_related ,categ
     
     else:
         return pd.DataFrame(dic_patents).T.sort_values(by="abstract comparison" , ascending = False)[:size]
+    
+    
+#merge the nobiliary particles with the last name
+#ln_suff file can be modified if more or less nobiliary particles want to be suppressed
+
+with open("/home/emma_scharfmann/LeeFleming/MattMarx_Ryan_dataset/Patent_paper_pairs/ln_suff.json","r", encoding="utf-8") as f:
+    ln_suff = json.load(f)
+    
+def ln_suff_merge(string):
+    for suff in ln_suff:
+        if f" {suff} " in string or string.startswith(f"{suff} "):
+            return string.replace(f"{suff} ",suff.replace(" ",""))
+    return string
+
+
+
+#suppress all the unwanted suffixes from a string. 
+#name_del file can be modified if more or less suffixes want to be suppressed 
+
+with open("/home/emma_scharfmann/LeeFleming/MattMarx_Ryan_dataset/Patent_paper_pairs/name_del-2.json","r", encoding="utf-8") as f:
+    name_del = json.load(f)
+
+def name_delete(string):
+    for elmt in name_del:
+        if f" {elmt}" in string:
+            return string.replace(f" {elmt}","")
+    return string
+
+
+
+#normalize a string dat that represents often a name. 
+
+def normalize(data):
+    normal = unicodedata.normalize('NFKD', data).encode('ASCII', 'ignore')
+    val = normal.decode("utf-8")
+    # delete unwanted elmt
+    val = name_delete(val)
+    # lower full name in upper
+    val = re.sub(r"[A-Z]{3,}", lambda x: x.group().lower(), val)
+    # add space in front of upper case
+    val = re.sub(r"(\w)([A-Z])", r"\1 \2", val)
+    # Lower case
+    val = val.lower()
+    # remove special characters
+    val = re.sub('[^A-Za-z0-9 ]+', ' ', val)
+    # remove multiple spaces
+    val = re.sub(' +', ' ', val)
+    # remove trailing spaces
+    val = val.strip()
+    # suffix merge
+    val = ln_suff_merge(val)
+
+    return val
+
+
+def main_inventors(technologies, number_technology , carbon_related , category , size ):
+    display = False
+    dic_patents = related_patents(number_technology , category, carbon_related , display)
+    dic_patents_co_inventors = {}
+    
+
+    for patent in dic_patents:
+        for k in range(len(dic_patents[patent]["list_inventors"])):
+            
+            inventor_id = dic_patents[patent]["list_inventors"][k]["inventor_id"]
+            inventor_name = dic_patents[patent]["list_inventors"][k]["inventor_first_name"] + " " + dic_patents[patent]["list_inventors"][k]["inventor_last_name"]
+            inventor_name_norm = normalize(inventor_name).split()
+            inventor_name_norm = inventor_name_norm[0] + " " + inventor_name_norm[-1]
+
+            if inventor_name_norm not in dic_patents_co_inventors:
+                dic_patents_co_inventors[inventor_name_norm] = {}
+                dic_patents_co_inventors[inventor_name_norm]["Inventor's name"] = inventor_name 
+                dic_patents_co_inventors[inventor_name_norm]["PatentsView inventor's id"] =  inventor_id 
+                dic_patents_co_inventors[inventor_name_norm]["Number of occurence"] = 1
+                dic_patents_co_inventors[inventor_name_norm]["Number of related citations"] = dic_patents[patent]["number_citations"]
+
+            else:
+                if inventor_id not in dic_patents_co_inventors[inventor_name_norm]["PatentsView inventor's id"] :
+                    dic_patents_co_inventors[inventor_name_norm]["PatentsView inventor's id"] += ", " + inventor_id
+                if inventor_name not in dic_patents_co_inventors[inventor_name_norm]["Inventor's name"] :
+                    dic_patents_co_inventors[inventor_name_norm]["Inventor's name"] += ", " + inventor_name
+                dic_patents_co_inventors[inventor_name_norm]["Number of occurence"] += 1
+                dic_patents_co_inventors[inventor_name_norm]["Number of related citations"] += dic_patents[patent]["number_citations"]
+
+
+        dic_patents_co_inventors = {k: v for k, v in sorted(dic_patents_co_inventors.items(), key=lambda item: item[1]["Number of occurence"] , reverse = True)}
+    
+    if dic_patents_co_inventors == {}:
+    
+        
+        return "No patent, select other key words"
+    else:
+        
+        for inventor_name_norm in list(dic_patents_co_inventors.keys())[:size]:
+            list_inventors = dic_patents_co_inventors[inventor_name_norm]["PatentsView inventor's id"].split(", ")
+            work_count = 0
+            cited_by_count = 0
+            
+            for elem in list_inventors:
+                url = "https://api.patentsview.org/inventors/query?q={%22inventor_id%22:[%22" + elem + "%22]}&f=[%22inventor_total_num_patents%22,%22patent_num_cited_by_us_patents%22]"
+                data = get_data(url)["inventors"][0]
+                work_count += int(data["inventor_total_num_patents"])
+                for k in range(len(data["patents"])):
+                    cited_by_count += int(data["patents"][k]["patent_num_cited_by_us_patents"])
+                
+            dic_patents_co_inventors[inventor_name_norm]["Number of patents"] = work_count
+            dic_patents_co_inventors[inventor_name_norm]["Number of US patents citations"] = cited_by_count
+            
+        
+                
+                
+        return pd.DataFrame(dic_patents_co_inventors , index = ["Inventor's name", "PatentsView inventor's id", "Number of occurence"  , "Number of patents" ,"Number of US patents citations" ,  "Number of related citations"]).T[:size].style.hide(axis="index")
+
+
+    
+    
+def map_inventors(technologies, number_technology , carbon_related , category):
+    display = False
+    dic_patents = related_patents(number_technology , category, carbon_related , display)
+    dic_patents_co_inventors = {}
+    count = 0
+    
+    for patent in dic_patents:
+        for k in range(len(dic_patents[patent]["list_inventors"])):
+            
+            dic_patents_co_inventors[count] = {}
+            
+            
+            dic_patents_co_inventors[count]["Latitude"] = dic_patents[patent]["list_inventors"][k]["inventor_latitude"]
+            dic_patents_co_inventors[count]["Longitude"] = dic_patents[patent]["list_inventors"][k]["inventor_longitude"]
+
+            count += 1
+                
+    if dic_patents_co_inventors == {}:
+        return "No patent, select other key words"
+    
+    
+    map_df = pd.DataFrame(dic_patents_co_inventors).T
+    map_df["longitude"]=map_df['Longitude'].astype(float)
+    map_df['latitude']=map_df['Latitude'].astype(float)
+
+    return map_df
+
+    #geometry = [Point(xy) for xy in zip(map_df['Longitude'], map_df['Latitude'])]
+    #gdf = GeoDataFrame(map_df, geometry=geometry)   
+
+    #this is a simple map that goes with geopandas
+    #world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
+    #gdf.plot(ax=world.plot( color='white', edgecolor='black' ), marker='o', color='red', markersize=15 , zorder = 1);
+    #plt.xlim([-180, 180])
+    #plt.ylim([-90, 90])
+
+
+    #plt.title("Main inventors: geographic location")
+    #plt.xlabel("Longitude")
+    #plt.ylabel("Latitude")
+    #plt.show()
+
+    
+        
     
 
 ################################### Extracted texts ###############################################################
