@@ -672,7 +672,7 @@ def extract_quantitative_data_technology(technologies, number_technology):
     dic_target = deployment_target(name_file , False)
     dic_cost = cost_reduction_target(name_file , False)
     dic_details = details(name_file , False)
-    
+    sentences = 'No information'
     
     if number_technology in dic_details:
         reference_text = dic_details[number_technology]
@@ -692,6 +692,7 @@ def extract_quantitative_data_technology(technologies, number_technology):
         print("\033[96mFROM IEA website: ")
         sentences = extract_sentences_with_numbers(cost_text , "\033[92mAnnounced cost reduction targets\x1b[0m")
     
+    return reference_text, sentences
             
 def extract_quantitative_data_paper( work_id):
     
@@ -738,7 +739,7 @@ def related_projects(technologies, number_technology , carbon_related , size):
     print("\033[92mTechnology details: \x1b[0m" , reference_text)
     print(" ")
     encoded_text = model.encode(reference_text, convert_to_tensor=False).tolist()
-
+     # reference_text key_initiative location_entities
     if number_technology in dic_key_initiatives:
         key_initiative = dic_key_initiatives[number_technology]
         print("\033[92mTechnology key initiatives: \x1b[0m" ,  key_initiative)
@@ -845,6 +846,8 @@ def related_projects(technologies, number_technology , carbon_related , size):
 
     else:
         return "No key initiatives given"
+
+    return reference_text,key_initiative,location_entities
 
 ## Mapping the authors
 
@@ -1170,7 +1173,7 @@ def finder():
         for i in range(len(list_words)):
             if "CCUS" in list_words[i]:
                 list_words[i] = list_words[i].replace("CCUS" , "carbon capture storage")
-    dic_categories[elem[1]]  = [  ", ".join([ " ".join(words.split()[:3]) for words in list_words ] )  ,  ", ".join([ " ".join(words.split()[:3]) for words in list_words[:-1] ]) , ", ".join([ " ".join(words.split()[:3]) for words in list_words[1:] ] ) ]  
+        dic_categories[elem[1]]  = [  ", ".join([ " ".join(words.split()[:3]) for words in list_words ] )  ,  ", ".join([ " ".join(words.split()[:3]) for words in list_words[:-1] ]) , ", ".join([ " ".join(words.split()[:3]) for words in list_words[1:] ] ) ]  
     
     return dic_technologies, dic_categories, list_categories_tech, list_technologies
                                        

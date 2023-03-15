@@ -43,7 +43,7 @@ with patent_finder:
   
   try:
     if st.button('Get related patents'):
-      patent_rank_df = multi_input_functions.get_ranking_patents(
+      patent_rank_df = patent_functions.get_ranking_patents(
       technologies = technology[0],
       number_technology = technology[1],
       carbon_related = patent_type_bool[1],
