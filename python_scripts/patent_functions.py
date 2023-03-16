@@ -97,7 +97,7 @@ def print_extracted_text(name_file):
 
 def details(name_file , display):
     
-    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open("/home/emma_scharfmann/LeeFleming/Synapse_project/" + name_file + ".txt", "r")
     lines = file.readlines()
 
     mark = 0 
@@ -126,11 +126,12 @@ def details(name_file , display):
         if mark == 1:
             text = text + line + " "
 
-        if line.split(" 	")[-1] == "Details":
+        if line.split(" 	")[-1] == "Details" or line.split(" 	")[-1] == "Hide":
             mark = 1
             text = ""
             
     return dic_details
+
 
 
 
@@ -672,7 +673,6 @@ def map_inventors(technologies, number_technology , carbon_related , category):
             
             dic_patents_co_inventors[count] = {}
             
-            
             dic_patents_co_inventors[count]["Latitude"] = dic_patents[patent]["list_inventors"][k]["inventor_latitude"]
             dic_patents_co_inventors[count]["Longitude"] = dic_patents[patent]["list_inventors"][k]["inventor_longitude"]
 
@@ -685,6 +685,7 @@ def map_inventors(technologies, number_technology , carbon_related , category):
     map_df = pd.DataFrame(dic_patents_co_inventors).T
     map_df["longitude"]=map_df['Longitude'].astype(float)
     map_df['latitude']=map_df['Latitude'].astype(float)
+    map_df = map_df[map_df["latitude"].notnull()]
 
     return map_df
 
@@ -702,6 +703,123 @@ def map_inventors(technologies, number_technology , carbon_related , category):
     #plt.xlabel("Longitude")
     #plt.ylabel("Latitude")
     #plt.show()
+
+    
+## Extract quantitative data
+
+def extract_sentences_with_numbers(text , text_name):
+    if text != None:
+        text = text.replace("CO 2" , "CO2")
+        text = text.replace("CO 3" , "CO3")
+        text = text.replace("CO(2)" , "CO2")
+        text = text.replace("CO(3)" , "CO3")
+        
+        print(text_name + ": " , text)
+        print(" ")
+
+
+
+        list_text = list(text)
+        for i in range(1,len(list_text)-1):
+            if list_text[i] == " " and list_text[i-1] == "." and list_text[i+1].isupper():
+                list_text[i] = "~"
+
+        text = "".join(list_text)
+        text = text.split("~")
+        for sentence in text:                
+
+            if any(char.isdigit() for char in sentence):
+                
+                
+                
+                if "CO2" in sentence:
+                    print("\x1b[31mCARBON RELATED:\x1b[0m", sentence)
+                    print(" ")
+
+
+                    
+                if "GJ" in sentence or "MJ" in sentence:
+                    print("\x1b[31mENERGY:\x1b[0m" , sentence)
+                    print(" ")
+
+
+                    
+                ##price
+                if "€"  in sentence or "$" in sentence or "EUR" in sentence or "dollars" in sentence.lower():
+                    print("\x1b[31mPRICE:\x1b[0m" , sentence)
+                    print(" ")
+
+
+                    
+                ##dates
+                digits = []
+                for word in sentence.replace("," , "").replace("%" , "").replace("." , " ").split():
+                    if word.isdigit() and 1850 < int(word) < 2200 :
+                        digits.append(word)
+                if digits != []:
+                    print("\x1b[31mDATE:\x1b[0m" , sentence)
+                    print(" ")
+
+
+                    
+                ##CO quantity
+                if "Mt" in sentence or "tC" in sentence or "t-C" in sentence:
+                    print("\x1b[31mCARBON QUANTITY:\x1b[0m" , sentence)
+                    print(" ")
+ 
+    print(" ")
+          
+    
+def extract_quantitative_data_technology(technologies, number_technology):
+    count = 0
+      
+    name_file = "iea"
+    dic_target = deployment_target(name_file , False)
+    dic_cost = cost_reduction_target(name_file , False)
+    dic_details = details(name_file , False)
+    sentences = 'No information'
+    
+    if number_technology in dic_details:
+        reference_text = dic_details[number_technology]
+            
+        print("\033[96mFROM IEA website: ")
+        print("\033[92mTechnology details: \x1b[0m" , reference_text)
+        print(" ")
+        encoded_text = model.encode(reference_text, convert_to_tensor=False).tolist()
+
+    if number_technology in dic_target:
+        cost_target_text = dic_target[number_technology]
+        print("\033[96mFROM IEA website: ")
+        sentences = extract_sentences_with_numbers(cost_target_text , "\033[92mDeployment target and Announced development target\x1b[0m")
+
+    if number_technology in dic_cost:
+        cost_text = dic_cost[number_technology]
+        print("\033[96mFROM IEA website: ")
+        sentences = extract_sentences_with_numbers(cost_text , "\033[92mAnnounced cost reduction targets\x1b[0m")
+    
+    return reference_text, sentences
+
+
+        
+def extract_quantitative_data_patent(patent_id):
+    
+
+    patent_id = patent_id[3:]
+        
+    url = "https://api.patentsview.org/patents/query?q={%22patent_id%22:%22" + str(patent_id) + "%22}&f=[%22patent_number%22,%22patent_title%22,%22patent_abstract%22,%22patent_date%22,%22inventor_last_name%22,%22inventor_first_name%22,%22assignee_organization%22]"
+    url_google = "https://patents.google.com/patent/US" + str(patent_id)
+    
+    data = get_data(url)["patents"][0]
+    title = data["patent_title"]
+    abstract = data["patent_abstract"]
+    co_inventors = ", ".join([ data["inventors"][i]["inventor_first_name"] + " " + data["inventors"][i]["inventor_last_name"] for i in range(len(data["inventors"])) ]) 
+    assignees =  ", ".join([ str(data["assignees"][i]["assignee_organization"]) for i in range(len(data["assignees"])) ] )
+
+    return url_google , title , abstract , data["patent_date"] , co_inventors , assignees
+
+
+
+
 
     
         
