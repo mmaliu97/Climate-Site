@@ -60,7 +60,7 @@ with patent_finder:
     st.write(f'<p style="color:Blue"> From IEA Website: <p style="color:Black"> <strong>Technology details:</strong> {reference_text}' , unsafe_allow_html = True)
     st.write(f'<p style="color:Blue"> From IEA Website: <p style="color:Black"> <strong>Deployment target and Announced development target:</strong> {sentences}' , unsafe_allow_html = True)
     st.write(f'<p style="color:Blue"> From IEA Website: <p style="color:Black"> <strong>Announced cost reduction targets:</strong> {sentences}' , unsafe_allow_html = True)
-    
+
     
   try:
       if st.button('Get related patents'):
