@@ -9,7 +9,6 @@ import folium
 import pandas as pd
 #from python_scripts import functions
 from python_scripts import paper_functions
-from python_scripts import others
 
 
 
