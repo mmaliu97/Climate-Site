@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 #from python_scripts import functions
 from python_scripts import patent_functions
-from python_scripts import others
 
 st.set_page_config(page_title="Patents and Inventors", page_icon="📖")
 
