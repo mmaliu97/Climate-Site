@@ -840,14 +840,15 @@ def related_projects(technologies, number_technology , carbon_related , size):
 
 
         if dic2 != {}:
-            return pd.DataFrame(dic2).T.sort_values(by="abstract comparision" , ascending = False)[:size]
+            related_proj_df = pd.DataFrame(dic2).T.sort_values(by="abstract comparision" , ascending = False)[:size]
+            return related_proj_df, reference_text,key_initiative,location_entities 
         else:
-            return "No paper found"
+            return "No paper found","No paper found","No paper found","No paper found"
 
     else:
-        return "No key initiatives given"
+        return "No key initiatives given","No key initiatives given","No key initiatives given","No key initiatives given"
 
-    return reference_text,key_initiative,location_entities
+    
 
 ## Mapping the authors
 
@@ -1126,25 +1127,27 @@ def map_authors(technologies, number_technology , carbon_related , size , catego
 
     
     map_df = pd.DataFrame(dic_papers_co_authors,).T.sort_values(by="abstract comparision" , ascending = False)[:size]
-    map_df['Longitude']=map_df['Longitude'].astype(float)
-    map_df['Latitude']=map_df['Latitude'].astype(float)
+    map_df['longitude']=map_df['Longitude'].astype(float)
+    map_df['latitude']=map_df['Latitude'].astype(float)
     
 
-    geometry = [Point(xy) for xy in zip(map_df['Longitude'], map_df['Latitude'])]
-    gdf = GeoDataFrame(map_df, geometry=geometry)   
+    # geometry = [Point(xy) for xy in zip(map_df['Longitude'], map_df['Latitude'])]
+    # gdf = GeoDataFrame(map_df, geometry=geometry) 
+
+    return map_df  
 
     #this is a simple map that goes with geopandas
-    world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
-    gdf.plot(ax=world.plot( color='white', edgecolor='black' ), marker='o', color='red', markersize=15 , zorder = 1);
+    # world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
+    # gdf.plot(ax=world.plot( color='white', edgecolor='black' ), marker='o', color='red', markersize=15 , zorder = 1);
     
-    plt.xlim([-180, 180])
-    plt.ylim([-90, 90])
+    # plt.xlim([-180, 180])
+    # plt.ylim([-90, 90])
 
 
-    plt.title("Main authors: geographic location" )
-    plt.xlabel("Longitude")
-    plt.ylabel("Latitude")
-    plt.show()
+    # plt.title("Main authors: geographic location" )
+    # plt.xlabel("Longitude")
+    # plt.ylabel("Latitude")
+    # plt.show()
        
 
 ################################### Extracted texts ###############################################################

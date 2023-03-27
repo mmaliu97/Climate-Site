@@ -82,7 +82,7 @@ def cosine_similarity2(vec_a, vec_b):
 
 def print_extracted_text(name_file):
 
-    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
     count = 0
     for index, line in enumerate(lines):
@@ -97,7 +97,7 @@ def print_extracted_text(name_file):
 
 def details(name_file , display):
     
-    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
 
     mark = 0 
@@ -137,7 +137,7 @@ def details(name_file , display):
 
 def key_initiatives(name_file , display ):
     
-    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
 
       
@@ -182,7 +182,7 @@ def key_initiatives(name_file , display ):
 
 def deployment_target(name_file , display):
     
-    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
 
 
@@ -226,7 +226,7 @@ def deployment_target(name_file , display):
     
 def cost_reduction_target(name_file , display):
     
-    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
     
     mark = 0 
@@ -271,7 +271,7 @@ def cost_reduction_target(name_file , display):
 
 def key_words(name_file, display ):
     
-    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     
     lines = file.readlines()
     
@@ -350,7 +350,7 @@ def key_words(name_file, display ):
 
 def technology(name_file, display ):
     # Filepath too specific, need to change to relative path
-    file = open('/home/emma_scharfmann/LeeFleming/Synapse_project/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open('D:/UC Berkeley/Climate Site/Climate-Site/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
     
     list_categories = []
@@ -550,8 +550,8 @@ def get_ranking_patents(technologies, number_technology ,category ,  carbon_rela
 #merge the nobiliary particles with the last name
 #ln_suff file can be modified if more or less nobiliary particles want to be suppressed
 
-with open("/home/emma_scharfmann/LeeFleming/MattMarx_Ryan_dataset/Patent_paper_pairs/ln_suff.json","r", encoding="utf-8") as f:
-    ln_suff = json.load(f)
+# with open("/home/emma_scharfmann/LeeFleming/MattMarx_Ryan_dataset/Patent_paper_pairs/ln_suff.json","r", encoding="utf-8") as f:
+#     ln_suff = json.load(f)
     
 def ln_suff_merge(string):
     for suff in ln_suff:
@@ -564,8 +564,8 @@ def ln_suff_merge(string):
 #suppress all the unwanted suffixes from a string. 
 #name_del file can be modified if more or less suffixes want to be suppressed 
 
-with open("/home/emma_scharfmann/LeeFleming/MattMarx_Ryan_dataset/Patent_paper_pairs/name_del-2.json","r", encoding="utf-8") as f:
-    name_del = json.load(f)
+# with open("/home/emma_scharfmann/LeeFleming/MattMarx_Ryan_dataset/Patent_paper_pairs/name_del-2.json","r", encoding="utf-8") as f:
+#     name_del = json.load(f)
 
 def name_delete(string):
     for elmt in name_del:
@@ -581,7 +581,7 @@ def normalize(data):
     normal = unicodedata.normalize('NFKD', data).encode('ASCII', 'ignore')
     val = normal.decode("utf-8")
     # delete unwanted elmt
-    val = name_delete(val)
+   # val = name_delete(val)
     # lower full name in upper
     val = re.sub(r"[A-Z]{3,}", lambda x: x.group().lower(), val)
     # add space in front of upper case
@@ -595,7 +595,7 @@ def normalize(data):
     # remove trailing spaces
     val = val.strip()
     # suffix merge
-    val = ln_suff_merge(val)
+    #val = ln_suff_merge(val)
 
     return val
 

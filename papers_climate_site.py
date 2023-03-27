@@ -94,8 +94,9 @@ with paper_finder:
 
 
   ## Get related_projects
+  ## Input is 
   if st.button('Get more information about the related_projects'):
-    reference_text,key_initiative,location_entities = paper_functions.related_projects(
+    related_proj_df, reference_text,key_initiative,location_entities  = paper_functions.related_projects(
     technologies = technology[0], 
     number_technology = technology[1], 
     carbon_related= patent_type_bool[1], 
@@ -104,8 +105,15 @@ with paper_finder:
     st.write(f'Technology details:  {reference_text}')
     st.write(f'Technology key initiatives {key_initiative}')
     st.write(f'Extracted projects and organization name {location_entities}')
+    st.dataframe(related_proj_df)
 
-  
+  if st.button('Get a map of authors'):
+    paper_rank_mdf = paper_functions.get_ranking_related_papers(
+    technologies = technology[0],
+    number_technology = technology[1],
+    carbon_related = patent_type_bool[1],
+    research_words = tech_category_keyword,
+    size = 10
+    )
 
-  
-
+    st.map(paper_rank_mdf)
