@@ -32,11 +32,13 @@ import re
 
 import geopandas as gpd
 from geopandas import GeoDataFrame
+import os
 
+cwd = os.getcwd()
 
 @st.cache_data  # 👈 Add the caching decorator
 def load_data():
-    url = "Synapse_project/Climate_site/python_scripts/institutions.tsv"
+    url = cwd + "/python_scripts/institutions.tsv"
     dic = pd.read_csv(url, delimiter = "\t" , index_col = 0).to_dict('index')
     return dic
 

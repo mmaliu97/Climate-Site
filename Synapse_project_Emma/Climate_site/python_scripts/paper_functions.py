@@ -13,9 +13,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from math import radians, cos, sin, asin, sqrt
 
+import os
 import spacy
 #!python -m spacy download en_core_web_lg
 #spacy_nlp = spacy.load("en_core_web_lg")
+
+cwd = os.getcwd()
+
 
 @st.cache_resource
 def spacy_func():
@@ -32,7 +36,8 @@ def model_nlp():
 
 @st.cache_data  # 👈 Add the caching decorator
 def load_data():
-    url = "Synapse_project/Climate_site/python_scripts/institutions.tsv"
+
+    url = cwd + "/python_scripts/institutions.tsv"
     dic = pd.read_csv(url, delimiter = "\t" , index_col = 0).to_dict('index')
     return dic
 
@@ -49,6 +54,7 @@ import re
 import geopandas as gpd
 from geopandas import GeoDataFrame
 #################### General Functions #############################
+
 
 def URL(base_URL , entity_type , filters):
     url = base_URL + entity_type + filters 
@@ -103,7 +109,7 @@ def cosine_similarity2(vec_a, vec_b):
 
 def print_extracted_text(name_file):
 
-    file = open('Synapse_project/Climate_site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open(cwd + '/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
     count = 0
     for index, line in enumerate(lines):
@@ -117,7 +123,7 @@ def print_extracted_text(name_file):
 
 def details(name_file , display):
     
-    file = open("Synapse_project/Climate_site/python_scripts/iea.txt", "r")
+    file = open(cwd + '/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
 
     mark = 0 
@@ -153,14 +159,9 @@ def details(name_file , display):
     return dic_details
 
 
-
-
-
-
-
 def key_initiatives(name_file , display ):
     
-    file = open('Synapse_project/Climate_site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open(cwd + '/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
 
       
@@ -205,7 +206,7 @@ def key_initiatives(name_file , display ):
 
 def deployment_target(name_file , display):
     
-    file = open('Synapse_project/Climate_site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open(cwd + '/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
 
 
@@ -249,7 +250,7 @@ def deployment_target(name_file , display):
     
 def cost_reduction_target(name_file , display):
     
-    file = open('Synapse_project/Climate_site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open(cwd + '/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
     
     mark = 0 
@@ -294,7 +295,7 @@ def cost_reduction_target(name_file , display):
 
 def key_words(name_file, display ):
     
-    file = open('Synapse_project/Climate_site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open(cwd + '/python_scripts/iea.txt', "r", encoding='utf8')
     
     lines = file.readlines()
     
@@ -373,7 +374,7 @@ def key_words(name_file, display ):
 
 def technology(name_file, display ):
     # Filepath too specific, need to change to relative path
-    file = open('Synapse_project/Climate_site/python_scripts/iea.txt', "r", encoding='utf8')
+    file = open(cwd + '/python_scripts/iea.txt', "r", encoding='utf8')
     lines = file.readlines()
     
     list_categories = []
