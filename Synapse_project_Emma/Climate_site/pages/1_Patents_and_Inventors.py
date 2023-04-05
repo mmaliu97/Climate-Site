@@ -82,7 +82,7 @@ with patent_finder:
     st.write("No patent found, try with other key words")
         
   try:  
-      if st.button('Get the main inventors patents'):
+      if st.button('Get main inventors of patents'):
           patent_rank_df = patent_functions.main_inventors(
           technologies = tech_category[1],
           number_technology = technology[1],
@@ -99,7 +99,7 @@ with patent_finder:
         
   try:
       
-      if st.button('Get the map of the main inventors patents'):
+      if st.button('Get the location of the main inventors'):
         patent_rank_df = patent_functions.map_inventors(
         technologies = tech_category[1],
         number_technology = technology[1],

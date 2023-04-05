@@ -19,11 +19,7 @@ with own_paper_finder:
   
   st.markdown("# Scientific publications and authors related to your technology")
   st.sidebar.header("Scientific publications and authors")
-  st.write(
-        """You can find the most related scientific publications and authors to your technology. Enjoy!"""
-    )
-
-
+  # st.subheader("Enter keywords related to the technology you are interest in")
   st.subheader("We are searching for the scientific publications which contain (in the title, abstract or text) the key words you can provide below:")
  
   key_words = st.text_input("Keywords", 'Input your text here')
