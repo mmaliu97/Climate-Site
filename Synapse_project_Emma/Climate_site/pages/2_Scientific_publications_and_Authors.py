@@ -113,7 +113,7 @@ with paper_finder:
   #      
   #try:
     
-  if st.button('Get the map of the main authors'):
+  if st.button('Get the location of the main authors'):
     map_author = paper_functions.map_authors(
     technologies = tech_category[1],
     number_technology = technology[1],

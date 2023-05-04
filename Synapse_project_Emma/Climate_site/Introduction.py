@@ -25,7 +25,7 @@ st.markdown(
    -  Database of patents: [PatentsView](https://patentsview.org/)
    
 
-    ### You want to know more about what we are doing? 
-    - Send us an email: emma_scharfmann@berkeley.edu
+    ### Want to know more about what we are doing? 
+    - Send us an email: martin97@berkeley.edu, emma_scharfmann@berkeley.edu
 """
 )
