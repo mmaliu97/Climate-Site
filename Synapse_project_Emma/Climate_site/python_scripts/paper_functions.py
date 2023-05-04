@@ -34,10 +34,10 @@ def model_nlp():
     return model
 
 
-@st.cache_data  # 👈 Add the caching decorator
+@st.cache_data  # 👈 Add the caching decorator Climate-Site\Synapse_project_Emma\Climate_site\python_scripts\institutions.tsv
 def load_data():
 
-    url = cwd + "/python_scripts/institutions.tsv"
+    url = "/Climate-Site/Synapse_project_Emma/Climate_site/python_scripts/institutions.tsv"
     dic = pd.read_csv(url, delimiter = "\t" , index_col = 0).to_dict('index')
     return dic
 
